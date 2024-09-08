@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Register and deregister sensors with home assistant over mqtt"
 readme = "README.md"
 requires-python = ">=3.9"
-license = {file = "LICENSE.txt"}
+license = "MIT"
 keywords = ["Home Assistant", "MQTT", "autodiscovery"]
 authors = [
   {name = "hvalev", email = "author@example.com" }
