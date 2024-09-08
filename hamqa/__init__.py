@@ -1,0 +1,1 @@
+from .hamqa import HAMQTTDevice # noqa
