@@ -28,17 +28,16 @@ Here is an example of how to register a single value sensor and publish its valu
 import paho.mqtt.client as mqtt
 from hamqa import HAMQTTDevice
 
+ip_address = 'xxx.xxx.xxx.xxx'
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-mqtt_client.connect('192.168.1.10', 1883, 60)
+mqtt_client.connect(ip_address, 1883, 60)
 
-lux_sensor = HAMQTTDevice(client=mqtt_client, 
+single_sensor = HAMQTTDevice(client=mqtt_client, 
                           base_topic="home",
                           device_id="lx_device")
 
 single_sensor.add_sensor(sensor_name="illumination", 
-                         sensor_type="sensor", 
-                         device_class="illuminance", 
-                         unit_of_measurement="lx")
+                         kwargs={"device_class":"illuminance", "unit_of_measurement":"lx"})
 
 single_sensor.register_sensors()
 single_sensor.publish_value(300)
@@ -53,8 +52,9 @@ Here is an example of how to register a device with multiple sensors and publish
 import paho.mqtt.client as mqtt
 from hamqa import HAMQTTDevice
 
+ip_address = 'xxx.xxx.xxx.xxx'
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-mqtt_client.connect('192.168.1.10', 1883, 60)
+mqtt_client.connect(ip_address, 1883, 60)
 
 # Create a multi-sensor device (for temperature and humidity)
 multi_sensor = HAMQTTDevice(client=mqtt_client, 
@@ -62,14 +62,10 @@ multi_sensor = HAMQTTDevice(client=mqtt_client,
                             device_id="temp_hum_device")
 
 # Add sensors for the multi-sensor device
-multi_sensor.add_sensor(sensor_name="temperature", 
-                        sensor_type="sensor", 
-                        device_class="temperature", 
-                        unit_of_measurement="°C")
-multi_sensor.add_sensor(sensor_name="humidity", 
-                        sensor_type="sensor", 
-                        device_class="humidity", 
-                        unit_of_measurement="%")
+multi_sensor.add_sensor(sensor_name="temperature",
+                        kwargs={"device_class":"temperature", "unit_of_measurement":"°C"})
+multi_sensor.add_sensor(sensor_name="humidity",
+                        kwargs={"device_class":"humidity", "unit_of_measurement":"%"})
 
 multi_sensor.register_sensors()
 sensor_values = {"temperature": 22, "humidity": 60}
