@@ -87,9 +87,9 @@ Initializes a new device instance.
 Adds a new sensor to the device.
 
 - `sensor_name`: The name of the sensor (e.g., `temperature`, `humidity`).
-- `sensor_type`: The type of sensor (e.g., `sensor`, `binary_sensor`).
-- `device_class`: The device class (e.g., `temperature`, `humidity`).
-- `unit_of_measurement`: Unit of measurement for the sensor (e.g., `°C`, `%`).
+- `kwargs`: keyword arguments passed as a dictionary, e.g.:
+  - `device_class`: The device class (e.g., `temperature`, `humidity`).
+  - `unit_of_measurement`: Unit of measurement for the sensor (e.g., `°C`, `%`).
 
 ### `register_sensors(self)`
 Registers all added sensors with Home Assistant, configuring MQTT discovery topics.
@@ -140,7 +140,7 @@ You can customize the MQTT path for Home Assistant discovery by providing a cust
 
 Example:
 
-```python custom_pattern = "custom/{device_id}/{sensor_type}/{sensor_name}/config" multi_sensor.set_path_pattern(custom_pattern) ```
+```python custom_pattern = "custom/{device_id}/{sensor_type}/{sensor_name}/config" multi_sensor.set_path_pattern(custom_pattern)```
 
 This will change the discovery path to:
 
