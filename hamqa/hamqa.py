@@ -58,7 +58,7 @@ class HAMQTTDevice:
         )
         return path
 
-    def add_sensor(self, sensor_name: str, **kwargs):
+    def add_sensor(self, sensor_name: str, kwargs):
         """
         Add a sensor to the device. Sensors will be registered in one go.
         
@@ -89,8 +89,7 @@ class HAMQTTDevice:
             })
             
             self.client.publish(sensor_config_topic, json.dumps(sensor_config), retain=True)
-            self._log(f"{sensor_config['device_class'].capitalize()} sensor '{sensor_name}' "
-                      f"registered at {sensor_config_topic}", 'info')
+            self._log(f"Sensor '{sensor_name}' registered at {sensor_config_topic}", 'info')
 
     def publish_value(self, value):
         """
