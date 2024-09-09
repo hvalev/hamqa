@@ -58,20 +58,19 @@ class HAMQTTDevice:
         )
         return path
 
-    def add_sensor(self, sensor_name: str, device_class: str, unit_of_measurement: str):
+    def add_sensor(self, sensor_name: str, **kwargs):
         """
         Add a sensor to the device. Sensors will be registered in one go.
         
         Args:
             sensor_name (str): The name of the sensor (e.g., 'temperature', 'humidity').
-            device_class (str): The class of the sensor (e.g., 'temperature', 'humidity').
-            unit_of_measurement (str): The unit of measurement (e.g., '°C', '%').
+            kwargs: Additional key-value pairs to append to the sensor dictionary.
         """
-        self.sensors[sensor_name] = {
-            "device_class": device_class,
+        sensor_info = {
             "name": f"{self.device_id}_{sensor_name}",
-            "unit_of_measurement": unit_of_measurement,
         }
+        sensor_info.update(kwargs)
+        self.sensors[sensor_name] = sensor_info
 
     def register_sensors(self):
         """Registers all sensors added to the device with Home Assistant via MQTT."""
