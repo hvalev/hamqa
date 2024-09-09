@@ -81,7 +81,7 @@ class HAMQTTDevice:
                 state_topic = f"{self.base_topic}{self.device_id}/state"
             else:
                 state_topic = f"{self.base_topic}{self.device_id}/{sensor_name}/state"
-            value_template = f"{{{{ value_json.{sensor_name} }}}}" if len(self.sensors) > 1 else "{{{{ value }}}}"
+            value_template = f"{{{{ value_json.{sensor_name} }}}}" if len(self.sensors) > 1 else "{{ value }}"
 
             # Update state topic and value template for either single or multi-sensor device
             sensor_config.update({
