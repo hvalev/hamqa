@@ -1,4 +1,8 @@
 # hamqa - Home Assistant MQTT autodiscovery sensor registration library
+[![build](https://github.com/hvalev/hamqa/actions/workflows/build.yml/badge.svg)](https://github.com/hvalev/hamqa/actions/workflows/build.yml)
+[![Downloads](https://static.pepy.tech/badge/hamqa)](https://pepy.tech/project/hamqa)
+[![Downloads](https://static.pepy.tech/badge/hamqa/month)](https://pepy.tech/project/hamqa)
+[![Downloads](https://static.pepy.tech/badge/hamqa/week)](https://pepy.tech/project/hamqa)
 
 The **hamqa** library provides an easy way to register and manage MQTT-based sensors for Home Assistant. It handles both devices producing a single or multiple values and allows to easily push updates from those devices to be consumed by Home Assistant.
 
