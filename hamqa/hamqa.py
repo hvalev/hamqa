@@ -76,19 +76,13 @@ class HAMQTTDevice:
         """Registers all sensors added to the device with Home Assistant via MQTT."""
         for sensor_name, sensor_config in self.sensors.items():
             sensor_config_topic = self._generate_mqtt_path(sensor_name)
-            if len(self.sensors) > 1:
-                state_topic = f"{self.base_topic}{self.device_id}/state"
-            else:
-                state_topic = f"{self.base_topic}{self.device_id}/{sensor_name}/state"
-            value_template = f"{{{{ value_json.{sensor_name} }}}}" if len(self.sensors) > 1 else "{{ value }}"
-
             # Update state topic and value template for either single or multi-sensor device
             sensor_config.update({
-                "state_topic": state_topic,
-                "value_template": value_template
+                "state_topic": f"{self.base_topic}{self.device_id}",
+                "value_template": f"{{{{ value_json.{sensor_name} }}}}"
             })
             
-            self.client.publish(sensor_config_topic, json.dumps(sensor_config), retain=True)
+            self.client.publish(sensor_config_topic, json.dumps(sensor_config).encode('utf-8'), qos=1, retain=True)
             self._log(f"Sensor '{sensor_name}' registered at {sensor_config_topic}", 'info')
 
     def publish_value(self, value):
@@ -101,18 +95,11 @@ class HAMQTTDevice:
         """
         if isinstance(value, dict):
             # Multi-sensor mode: Publish a JSON object with multiple sensor values
-            state_topic = f"{self.base_topic}{self.device_id}/state"
-            self.client.publish(state_topic, json.dumps(value))
-            self._log(f"Published multi-sensor JSON '{value}' to {state_topic}", 'info')
+            state_topic = f"{self.base_topic}{self.device_id}"
+            self.client.publish(state_topic, json.dumps(value).encode('utf-8'), qos=1)
+            self._log(f"Published value '{value}' to {state_topic}")
         else:
-            # Single sensor mode: Publish to the individual sensor state topic
-            if len(self.sensors) == 1:
-                sensor_name = next(iter(self.sensors))
-                state_topic = f"{self.base_topic}{self.device_id}/{sensor_name}/state"
-                self.client.publish(state_topic, str(value))
-                self._log(f"Published value '{value}' to {state_topic}", 'info')
-            else:
-                self._log("Error: Single value provided but multiple sensors registered", 'error')
+            self._log("Error: Invalid Format. Publish values as dict using as follows {'sensor_name': value}")
 
     def remove_device(self):
         """Remove the registered device from Home Assistant"""
