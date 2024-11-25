@@ -3,6 +3,7 @@
 import ujson as json
 from mqtt_as import MQTTClient
 
+
 class HAMQTTDevice:
     def __init__(self, client: MQTTClient,
                  base_topic: str,
@@ -72,7 +73,10 @@ class HAMQTTDevice:
                 "value_template": f"{{{{ value_json.{sensor_name} }}}}"
             })
 
-            await self.client.publish(sensor_config_topic, json.dumps(sensor_config).encode('utf-8'), qos=1, retain=True)
+            await self.client.publish(sensor_config_topic, 
+                                      json.dumps(sensor_config).encode('utf-8'), 
+                                      qos=1, 
+                                      retain=True)
             self._log(f"Sensor '{sensor_name}' registered at {sensor_config_topic}")
 
     def publish_value(self, value):
