@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hamqa"
-version = "0.3.0"
+version = "0.4.0"
 description = "Home Assistant MQTT autodiscovery sensor registration and publishing library"
 readme = "README.md"
 homepage = "https://github.com/hvalev/hamqa"
