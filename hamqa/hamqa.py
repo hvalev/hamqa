@@ -72,7 +72,7 @@ class HAMQTTDevice:
         sensor_info.update(kwargs)
         self.sensors[sensor_name] = sensor_info
 
-    def register_sensors(self):
+    def register_sensors(self, qos: int = 0, retain: bool = True):
         """Registers all sensors added to the device with Home Assistant via MQTT."""
         for sensor_name, sensor_config in self.sensors.items():
             sensor_config_topic = self._generate_mqtt_path(sensor_name)
@@ -82,10 +82,13 @@ class HAMQTTDevice:
                 "value_template": f"{{{{ value_json.{sensor_name} }}}}"
             })
             
-            self.client.publish(sensor_config_topic, json.dumps(sensor_config).encode('utf-8'), qos=1, retain=True)
+            self.client.publish(sensor_config_topic, 
+                                json.dumps(sensor_config).encode('utf-8'), 
+                                qos=qos, 
+                                retain=retain)
             self._log(f"Sensor '{sensor_name}' registered at {sensor_config_topic}", 'info')
 
-    def publish_value(self, value):
+    def publish_value(self, value, qos: int = 0):
         """
         Publish values to the MQTT state topics. Can handle single values or multiple sensors as a JSON object.
         
@@ -96,7 +99,7 @@ class HAMQTTDevice:
         if isinstance(value, dict):
             # Multi-sensor mode: Publish a JSON object with multiple sensor values
             state_topic = f"{self.base_topic}{self.device_id}"
-            self.client.publish(state_topic, json.dumps(value).encode('utf-8'), qos=1)
+            self.client.publish(state_topic, json.dumps(value).encode('utf-8'), qos = qos)
             self._log(f"Published value '{value}' to {state_topic}")
         else:
             self._log("Error: Invalid Format. Publish values as dict using as follows {'sensor_name': value}")
