@@ -17,7 +17,7 @@ python = ">=3.8"
 paho-mqtt = "^2.1.0"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.4.6"
+ruff = ">=0.4.6,<0.16.0"
 pytest = "^8.2.1"
 
 [build-system]
